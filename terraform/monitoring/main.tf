@@ -43,6 +43,7 @@ resource "google_compute_instance" "zabbix_server" {
   name         = "zabbix-server"
   machine_type = "e2-standard-4"
   zone         = "us-central1-c"
+  tags         = ["http-server", "https-server"]
 
   boot_disk {
     initialize_params {
