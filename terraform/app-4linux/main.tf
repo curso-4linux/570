@@ -36,7 +36,7 @@ resource "google_compute_firewall" "allow_zabbix_agent" {
 
   allow {
     protocol = "tcp"
-    ports    = ["10050"]
+    ports    = ["10050", "10051"]
   }
 
   source_ranges = ["0.0.0.0/0"]
