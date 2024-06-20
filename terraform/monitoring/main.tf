@@ -4,6 +4,32 @@ provider "google" {
   region      = "us-central1"
 }
 
+resource "google_compute_firewall" "allow_mysql" {
+  name    = "allow-mysql"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["3306"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["zabbix-db"]
+}
+
+resource "google_compute_firewall" "allow_prometheus" {
+  name    = "allow-prometheus"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9090"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["prometheus-server"]
+}
+
 resource "google_compute_address" "zabbix_db_static_ip" {
   name   = "zabbix-db-static-ip"
   region = "us-central1"
@@ -23,6 +49,7 @@ resource "google_compute_instance" "zabbix_db" {
   name         = "zabbix-db"
   machine_type = "e2-standard-2"
   zone         = "us-central1-c"
+  tags         = ["zabbix-db"]
 
   boot_disk {
     initialize_params {
@@ -64,6 +91,7 @@ resource "google_compute_instance" "prometheus_server" {
   name         = "prometheus-server"
   machine_type = "e2-standard-2"
   zone         = "us-central1-c"
+  tags         = ["prometheus-server"]
 
   boot_disk {
     initialize_params {
