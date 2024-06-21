@@ -43,6 +43,19 @@ resource "google_compute_firewall" "allow_zabbix_agent" {
   target_tags   = ["zabbix-agent"]
 }
 
+resource "google_compute_firewall" "allow_node_exporter" {
+  name    = "allow-node-exporter"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9100"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["node-exporter"]
+}
+
 resource "google_compute_address" "db_server_static_ip" {
   name   = "db-server-static-ip"
   region = "us-central1"
@@ -62,7 +75,7 @@ resource "google_compute_instance" "db_server" {
   name         = "db-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["db-server", "zabbix-agent"]
+  tags         = ["db-server", "zabbix-agent", "node-exporter"]
 
   boot_disk {
     initialize_params {
@@ -102,7 +115,7 @@ resource "google_compute_instance" "web_server" {
   name         = "web-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["http-server", "https-server", "zabbix-agent"]
+  tags         = ["http-server", "https-server", "zabbix-agent", "node-exporter"]
 
   boot_disk {
     initialize_params {
@@ -148,7 +161,7 @@ resource "google_compute_instance" "memcached_server" {
   name         = "memcached-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["memcached-server", "zabbix-agent"]
+  tags         = ["memcached-server", "zabbix-agent", "node-exporter"]
 
   boot_disk {
     initialize_params {
