@@ -30,6 +30,19 @@ resource "google_compute_firewall" "allow_memcached" {
   target_tags   = ["memcached-server"]
 }
 
+resource "google_compute_firewall" "allow_cadvisor" {
+  name    = "allow-cadvisor"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8080"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["cadvisor"]
+}
+
 resource "google_compute_firewall" "allow_zabbix_agent" {
   name    = "allow-zabbix-agent"
   network = "default"
@@ -75,7 +88,7 @@ resource "google_compute_instance" "db_server" {
   name         = "db-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["db-server", "zabbix-agent", "node-exporter"]
+  tags         = ["db-server", "zabbix-agent", "node-exporter", "cadvisor"]
 
   boot_disk {
     initialize_params {
@@ -115,7 +128,7 @@ resource "google_compute_instance" "web_server" {
   name         = "web-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["http-server", "https-server", "zabbix-agent", "node-exporter"]
+  tags         = ["http-server", "https-server", "zabbix-agent", "node-exporter", "cadvisor"]
 
   boot_disk {
     initialize_params {
@@ -161,7 +174,7 @@ resource "google_compute_instance" "memcached_server" {
   name         = "memcached-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["memcached-server", "zabbix-agent", "node-exporter"]
+  tags         = ["memcached-server", "zabbix-agent", "node-exporter", "cadvisor"]
 
   boot_disk {
     initialize_params {
