@@ -43,6 +43,19 @@ resource "google_compute_firewall" "allow_cadvisor" {
   target_tags   = ["cadvisor"]
 }
 
+resource "google_compute_firewall" "allow_mysqld_exporter" {
+  name    = "allow-mysqld-exporter"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9104"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["mysqld-exporter"]
+}
+
 resource "google_compute_firewall" "allow_zabbix_agent" {
   name    = "allow-zabbix-agent"
   network = "default"
@@ -88,7 +101,7 @@ resource "google_compute_instance" "db_server" {
   name         = "db-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["db-server", "zabbix-agent", "node-exporter", "cadvisor"]
+  tags         = ["db-server", "zabbix-agent", "node-exporter", "cadvisor", "mysqld-exporter"]
 
   boot_disk {
     initialize_params {
