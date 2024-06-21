@@ -35,6 +35,6 @@ services:
     ports:
       - 9104:9104
     links:
-      - mysqld
+      - db-server
     depends_on:
       - db-server
