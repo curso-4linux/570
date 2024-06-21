@@ -11,6 +11,20 @@ services:
       - "3306:3306"
     volumes:
       - "/570/sql/:/opt"
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes: 
+      - "/:/rootfs"
+      - "/var/run:/var/run"
+      - "/sys:/sys"
+      - "/var/lib/docker/:/var/lib/docker"
+      - "/dev/disk/:/dev/disk"
+    privileged: true
+    devices:
+      - "/dev/kmsg"
   mysqld-exporter:
     image: quay.io/prometheus/mysqld-exporter
     command:
