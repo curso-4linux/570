@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db-server:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ROOT_PASSWORD: "Abc123"
+      MYSQL_DATABASE: php
+      MYSQL_USER: php
+      MYSQL_PASSWORD: 4linux
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/570/sql/:/opt"
+  mysqld-exporter:
+    image: quay.io/prometheus/mysqld-exporter
+    command:
+     - -collect.info_schema.tablestats
+    container_name: mysqld-exporter
+    environment:
+      - DATA_SOURCE_NAME=exporter:exporter@(mysqld:3306)/
+    ports:
+      - 9104:9104
+    links:
+      - mysqld
+    depends_on:
+      - db-server
