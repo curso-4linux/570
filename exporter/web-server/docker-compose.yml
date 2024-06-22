@@ -2,6 +2,7 @@ version: '3'
 services:
   web-server:
     image: "lab4linux/4linux-app"
+    restart: unless-stopped
     environment:
       DB_HOST: "${DB_HOST}"
       DB_PORT: 3306
@@ -15,6 +16,7 @@ services:
   cadvisor:
     container_name: cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
+    restart: unless-stopped
     ports:
       - "8080:8080"
     volumes: 
@@ -26,3 +28,9 @@ services:
     privileged: true
     devices:
       - "/dev/kmsg"
+  apache-exporter:
+    image: bitnami/apache-exporter:latest
+    container_name: apache-exporter
+    restart: unless-stopped
+    ports:
+      - "9117:9117"

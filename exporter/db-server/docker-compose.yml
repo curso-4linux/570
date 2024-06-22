@@ -2,6 +2,7 @@ version: '3'
 services:
   db-server:
     image: "mysql:5.7"
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: "Abc123"
       MYSQL_DATABASE: php
@@ -14,6 +15,7 @@ services:
   cadvisor:
     container_name: cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
+    restart: unless-stopped
     ports:
       - "8080:8080"
     volumes: 
