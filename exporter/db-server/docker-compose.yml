@@ -11,7 +11,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - "/570/sql/:/opt"
+      - "/opt/data:/var/lib/mysql"
   cadvisor:
     container_name: cadvisor
     image: gcr.io/cadvisor/cadvisor:latest

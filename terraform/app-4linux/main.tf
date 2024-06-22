@@ -158,6 +158,7 @@ resource "google_compute_instance" "db_server" {
       git clone https://github.com/curso-4linux/570.git
 
       # Inicia o container do banco de dados MySQL
+      mkdir /opt/data
       docker-compose -f /570/compose/db-server/docker-compose.yml up -d
     EOF
   }
