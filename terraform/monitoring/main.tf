@@ -17,6 +17,19 @@ resource "google_compute_firewall" "allow_prometheus" {
   target_tags   = ["prometheus-server"]
 }
 
+resource "google_compute_firewall" "allow_grafana" {
+  name    = "allow-grafana"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["3000"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["grafana-server"]
+}
+
 resource "google_compute_address" "zabbix_db_static_ip" {
   name   = "zabbix-db-static-ip"
   region = "us-central1"
@@ -77,7 +90,7 @@ resource "google_compute_instance" "prometheus_server" {
   name         = "prometheus-server"
   machine_type = "e2-standard-2"
   zone         = "us-central1-c"
-  tags         = ["prometheus-server"]
+  tags         = ["prometheus-server", "grafana-server"]
 
   boot_disk {
     initialize_params {
