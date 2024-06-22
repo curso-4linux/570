@@ -1,7 +1,8 @@
 version: '3'
 services:
   web-server:
-    image: "lab4linux/4linux-app"
+    image: "lab4linux/app-4linux:latest"
+    restart: unless-stopped
     environment:
       DB_HOST: "${DB_HOST}"
       DB_PORT: 3306
@@ -9,6 +10,6 @@ services:
       DB_PASS: 4linux
       DB_NAME: php
     ports:
-      - "80:8080"
+     - "80:80"
     volumes:
-      - "/570/config/php.ini:/etc/php7/php.ini"
+      - "/570/config/php.ini:/etc/php/8.1/apache2/php.ini"
