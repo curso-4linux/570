@@ -56,6 +56,32 @@ resource "google_compute_firewall" "allow_mysqld_exporter" {
   target_tags   = ["mysqld-exporter"]
 }
 
+resource "google_compute_firewall" "allow_apache_exporter" {
+  name    = "allow-apache-exporter"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9117"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["apache-exporter"]
+}
+
+resource "google_compute_firewall" "allow_memcached_exporter" {
+  name    = "allow-memcached-exporter"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9150"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["memcached-exporter"]
+}
+
 resource "google_compute_firewall" "allow_zabbix_agent" {
   name    = "allow-zabbix-agent"
   network = "default"
@@ -141,7 +167,7 @@ resource "google_compute_instance" "web_server" {
   name         = "web-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["http-server", "https-server", "zabbix-agent", "node-exporter", "cadvisor"]
+  tags         = ["http-server", "https-server", "zabbix-agent", "node-exporter", "cadvisor", "apache-exporter"]
 
   boot_disk {
     initialize_params {
@@ -187,7 +213,7 @@ resource "google_compute_instance" "memcached_server" {
   name         = "memcached-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["memcached-server", "zabbix-agent", "node-exporter", "cadvisor"]
+  tags         = ["memcached-server", "zabbix-agent", "node-exporter", "cadvisor", "memcached-exporter"]
 
   boot_disk {
     initialize_params {

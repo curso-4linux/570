@@ -18,3 +18,10 @@ services:
     privileged: true
     devices:
       - "/dev/kmsg"
+  memcached-exporter:
+    image: bitnami/memcached-exporter:latest
+    container_name: memcached-exporter
+    environment:
+      - MEMCACHED_HOST=memcached-server
+    ports:
+      - "9150:9150"
