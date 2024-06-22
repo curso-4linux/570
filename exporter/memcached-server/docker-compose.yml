@@ -21,10 +21,10 @@ services:
     devices:
       - "/dev/kmsg"
   memcached-exporter:
-    image: bitnami/memcached-exporter:latest
+    image: prom/memcached-exporter
     container_name: memcached-exporter
     restart: unless-stopped
-    environment:
-      - MEMCACHED_HOST=memcached-server
     ports:
       - "9150:9150"
+    command:
+      - --memcached.address=IP:11211
