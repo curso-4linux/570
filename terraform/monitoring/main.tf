@@ -17,6 +17,19 @@ resource "google_compute_firewall" "allow_prometheus" {
   target_tags   = ["prometheus-server"]
 }
 
+resource "google_compute_firewall" "allow_alertmanager" {
+  name    = "allow-alertmanager"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9093"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["alertmanager"]
+}
+
 resource "google_compute_firewall" "allow_grafana" {
   name    = "allow-grafana"
   network = "default"
@@ -90,7 +103,7 @@ resource "google_compute_instance" "prometheus_server" {
   name         = "prometheus-server"
   machine_type = "e2-standard-2"
   zone         = "us-central1-c"
-  tags         = ["prometheus-server", "grafana-server"]
+  tags         = ["prometheus-server", "grafana-server", "alertmanager"]
 
   boot_disk {
     initialize_params {
