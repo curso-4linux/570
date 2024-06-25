@@ -66,6 +66,8 @@ resource "google_compute_instance" "zabbix_db" {
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+      size  = "30"
+      type  = "pd-balanced"
     }
   }
 
@@ -87,6 +89,8 @@ resource "google_compute_instance" "zabbix_server" {
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+      size  = "30"
+      type  = "pd-balanced"
     }
   }
 
@@ -108,6 +112,8 @@ resource "google_compute_instance" "prometheus_server" {
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+      size  = "30"
+      type  = "pd-balanced"
     }
   }
 

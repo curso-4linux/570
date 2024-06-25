@@ -108,6 +108,19 @@ resource "google_compute_firewall" "allow_node_exporter" {
   target_tags   = ["node-exporter"]
 }
 
+resource "google_compute_firewall" "allow_opentelemetry" {
+  name    = "allow-opentelemetry"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["1777", "6831", "6832", "9411", "14250", "14268", "4317", "4318", "55678", "55679", "8888"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["opentelemetry"]
+}
+
 resource "google_compute_address" "db_server_static_ip" {
   name   = "db-server-static-ip"
   region = "us-central1"
@@ -127,11 +140,13 @@ resource "google_compute_instance" "db_server" {
   name         = "db-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["db-server", "zabbix-agent", "node-exporter", "cadvisor", "mysqld-exporter"]
+  tags         = ["db-server", "zabbix-agent", "node-exporter", "cadvisor", "mysqld-exporter", "opentelemetry"]
 
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      size  = "20"
+      type  = "pd-balanced"
     }
   }
 
@@ -168,11 +183,13 @@ resource "google_compute_instance" "web_server" {
   name         = "web-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["http-server", "https-server", "zabbix-agent", "node-exporter", "cadvisor", "apache-exporter"]
+  tags         = ["http-server", "https-server", "zabbix-agent", "node-exporter", "cadvisor", "apache-exporter", "opentelemetry"]
 
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      size  = "20"
+      type  = "pd-balanced"
     }
   }
 
@@ -214,11 +231,13 @@ resource "google_compute_instance" "memcached_server" {
   name         = "memcached-server"
   machine_type = "e2-medium"
   zone         = "us-central1-c"
-  tags         = ["memcached-server", "zabbix-agent", "node-exporter", "cadvisor", "memcached-exporter"]
+  tags         = ["memcached-server", "zabbix-agent", "node-exporter", "cadvisor", "memcached-exporter", "opentelemetry"]
 
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      size  = "20"
+      type  = "pd-balanced"
     }
   }
 
