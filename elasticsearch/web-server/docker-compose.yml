@@ -2,10 +2,6 @@ version: '3'
 services:
   web-server:
     image: "lab4linux/app-4linux:latest"
-    logging:
-      driver: "gelf"
-      options:
-        gelf-address: "udp://GRAYLOG_SERVER:12201"      
     restart: unless-stopped
     environment:
       DB_HOST: "${DB_HOST}"
@@ -15,7 +11,7 @@ services:
       DB_NAME: php
     ports:
      - "80:80"
-    volumes:
+     volumes:
       - "/570/config/php.ini:/usr/local/etc/php/php.ini"
       - "/570/config/server-status.conf:/etc/apache2/conf-enabled/server-status.conf"       
   cadvisor:

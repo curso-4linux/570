@@ -43,6 +43,19 @@ resource "google_compute_firewall" "allow_gelf_udp" {
   target_tags   = ["gelf-udp"]
 }
 
+resource "google_compute_firewall" "allow_kibana" {
+  name    = "allow-kibana"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["5601"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["kibana"]
+}
+
 resource "google_compute_address" "graylog_server_static_ip" {
   name   = "graylog-server-static-ip"
   region = "us-central1"
@@ -80,6 +93,7 @@ resource "google_compute_instance" "elk_server" {
   name         = "elk-server"
   machine_type = "e2-standard-4"
   zone         = "us-central1-c"
+  tags         = ["kibana", "http-server"]
 
   boot_disk {
     initialize_params {

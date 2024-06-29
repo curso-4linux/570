@@ -4,7 +4,7 @@ services:
     image: "lab4linux/app-4linux:latest"
     restart: unless-stopped
     environment:
-      DB_HOST: "${DB_HOST}"
+      DB_HOST: "db-server"
       DB_PORT: 3306
       DB_USER: php
       DB_PASS: 4linux
